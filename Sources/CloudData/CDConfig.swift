@@ -8,11 +8,19 @@
 public struct CDConfig {
     let containerIdentifier: String
     let cloudType: CDConfig.DataBaseType
-    let zone: String? = nil
-
+    let zone: String?
+    
     public enum DataBaseType {
         case `private`
         case `public`
         case shared
+    }
+    
+    public init(containerIdentifier: String,
+                cloudType: CDConfig.DataBaseType,
+                zone: String? = nil) {
+        self.containerIdentifier = containerIdentifier
+        self.cloudType = cloudType
+        self.zone = zone
     }
 }
