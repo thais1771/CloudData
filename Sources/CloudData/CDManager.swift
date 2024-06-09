@@ -16,7 +16,7 @@ public class CDManager: ObservableObject {
     /// The CloudKit container used to manage CloudKit interactions.
     ///
     /// - Note: Based on the configuration
-    private lazy var container = CKContainer(identifier: config.containerIdentifier)
+    lazy var container = CKContainer(identifier: config.containerIdentifier)
     /// The CloudKit database (private, public, or shared) to be used.
     ///
     /// - Note: Based on the configuration
