@@ -30,24 +30,15 @@ public class CDManager: ObservableObject {
     }
 
     // MARK: - Actions
-    public func fetch(recordType: String, fromZoneName zoneName: String) async throws -> [String: String] {
-        var recipes: [String: String] = [:]
-        let query = CKQuery(recordType: recordType, predicate: NSPredicate(value: true))
-
-        let result = try await database.records(matching: query,
-                                                inZoneWith: CKRecordZone(zoneName: zoneName).zoneID,
-                                                desiredKeys: nil)
-        let records = result.matchResults.compactMap { $0.1.get }
-
-        do {
-            try records.forEach { dataClosure in
-                let record = try dataClosure()
-                recipes[record.recordID.recordName] = record["name"]
-            }
-            
-            return recipes
-        } catch {
-            throw error
+    public func fetch(recordType: String, fromZoneName zoneName: String? = nil) async throws -> [String: String] {
+        switch configuration.cloudType {
+        case .private:
+            try await getPrivateRecords(recordType: recordType,
+                                        fromZoneName: zoneName)
+        case .public:
+            ["data": "No data"]
+        case .shared:
+            ["data": "No data"]
         }
     }
 }

@@ -19,4 +19,38 @@ extension CDManager {
         case .shared: container.sharedCloudDatabase
         }
     }
+
+    func getPrivateRecords(recordType: String,
+                           fromZoneName zoneName: String? = nil) async throws -> [String: String] {
+        var recipes: [String: String] = [:]
+        let query = CKQuery(recordType: recordType, predicate: NSPredicate(value: true))
+        let zone = zoneName != nil ? CKRecordZone(zoneName: zoneName!) : nil
+        
+        let result = try await database.records(matching: query,
+                                                inZoneWith: zone?.zoneID,
+                                                desiredKeys: nil)
+
+        let records = result.matchResults.compactMap { result in
+            result.1.get
+        }
+
+        do {
+            try records.forEach { dataClosure in
+                let record = try dataClosure()
+                recipes[record.recordID.recordName] = record["name"]
+            }
+
+            return recipes
+        } catch {
+            throw error
+        }
+    }
+
+    func getPublicRecords() -> [String: String] {
+        [:]
+    }
+
+    func getSharedRecords() -> [String: String] {
+        [:]
+    }
 }
