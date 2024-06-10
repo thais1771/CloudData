@@ -5,10 +5,9 @@
 //
 
 // TODO: Documentation
-public struct CDConfig {
+public struct CDManagerConfig {
     let containerIdentifier: String
-    let cloudType: CDConfig.DataBaseType
-    let zone: String
+    let cloudType: CDManagerConfig.DataBaseType
     
     public enum DataBaseType {
         case `private`
@@ -17,10 +16,8 @@ public struct CDConfig {
     }
     
     public init(containerIdentifier: String,
-                cloudType: CDConfig.DataBaseType,
-                zone: String) {
+                cloudType: CDManagerConfig.DataBaseType) {
         self.containerIdentifier = containerIdentifier
         self.cloudType = cloudType
-        self.zone = zone
     }
 }
