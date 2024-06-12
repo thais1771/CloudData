@@ -39,7 +39,7 @@ public class CDManager: ObservableObject {
     /// - Returns: A dictionary with fetched data.
     /// - Throws: An error if the fetch operation fails.
     public func fetch(recordType: String, fromZoneName zoneName: String? = nil) async throws -> [[String: Any]] {
-        try await fetch(recordType: recordType, fromZoneName: zoneName).toDictionary()
+        try await fetchRecords(with: recordType, fromZoneName: zoneName).toDictionary()
     }
 
     /// Fetches records of a specified type from the CloudKit database.
@@ -50,7 +50,7 @@ public class CDManager: ObservableObject {
     ///   - zoneName: The name of the zone to fetch records from. Defaults to `nil`.
     /// - Returns: A dictionary with fetched data.
     /// - Throws: An error if the fetch operation fails.
-    public func fetch(recordType: String, fromZoneName zoneName: String? = nil) async throws -> [CKRecord] {
+    public func fetchRecords(with recordType: String, fromZoneName zoneName: String? = nil) async throws -> [CKRecord] {
         switch configuration.cloudType {
         case .private:
             try await getPrivateRecords(recordType: recordType,
