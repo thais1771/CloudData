@@ -20,12 +20,10 @@ extension CDManager {
         }
     }
 
-    func getPrivateRecords(recordType: String,
-                           fromZoneName zoneName: String? = nil) async throws -> [String: String] {
-        var recipes: [String: String] = [:]
+    func getPrivateRecords(recordType: String, fromZoneName zoneName: String? = nil) async throws -> [CKRecord] {
         let query = CKQuery(recordType: recordType, predicate: NSPredicate(value: true))
         let zone = zoneName != nil ? CKRecordZone(zoneName: zoneName!) : nil
-        
+
         let result = try await database.records(matching: query,
                                                 inZoneWith: zone?.zoneID,
                                                 desiredKeys: nil)
@@ -35,12 +33,8 @@ extension CDManager {
         }
 
         do {
-            try records.forEach { dataClosure in
-                let record = try dataClosure()
-                recipes[record.recordID.recordName] = record["name"]
-            }
-
-            return recipes
+            let records = try records.map { try $0() }
+            return []
         } catch {
             throw error
         }

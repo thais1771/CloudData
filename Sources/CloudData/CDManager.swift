@@ -30,15 +30,39 @@ public class CDManager: ObservableObject {
     }
 
     // MARK: - Actions
-    public func fetch(recordType: String, fromZoneName zoneName: String? = nil) async throws -> [String: String] {
+    /// Fetches records of a specified type from the CloudKit database.
+    ///
+    /// This method fetches records based on the CloudKit database type (private, public, or shared).
+    /// - Parameters:
+    ///   - recordType: The type of record to fetch.
+    ///   - zoneName: The name of the zone to fetch records from. Defaults to `nil`.
+    /// - Returns: A dictionary with fetched data.
+    /// - Throws: An error if the fetch operation fails.
+    public func fetch<DataModel: Decodable>(recordType: String, fromZoneName zoneName: String? = nil) async throws -> [DataModel] {
         switch configuration.cloudType {
         case .private:
-            try await getPrivateRecords(recordType: recordType,
-                                        fromZoneName: zoneName)
+            let records = try await getPrivateRecords(recordType: recordType,
+                                                      fromZoneName: zoneName)
+            return try records.compactMap { try Encoder.encode($0.dictionaryWithValues(forKeys: $0.allKeys())) }
         case .public:
-            ["data": "No data"]
+            return []
         case .shared:
-            ["data": "No data"]
+            return []
+        }
+    }
+}
+
+private enum Encoder {
+    static func encode<DataModel: Decodable>(_ dictionary: [String: Any]) throws -> DataModel {
+        let data = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
+        let decoder = JSONDecoder()
+
+        do {
+            let decodedData = try decoder.decode(DataModel.self,
+                                                 from: data)
+            return decodedData
+        } catch {
+            throw error
         }
     }
 }
