@@ -33,8 +33,7 @@ extension CDManager {
         }
 
         do {
-            let records = try records.map { try $0() }
-            return []
+            return try records.map { try $0() }
         } catch {
             throw error
         }

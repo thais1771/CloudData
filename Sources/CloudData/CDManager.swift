@@ -43,11 +43,18 @@ public class CDManager: ObservableObject {
         case .private:
             let records = try await getPrivateRecords(recordType: recordType,
                                                       fromZoneName: zoneName)
-            return try records.compactMap { try Encoder.encode($0.dictionaryWithValues(forKeys: $0.allKeys())) }
+            return try decodeRecords(records: records)
         case .public:
             return []
         case .shared:
             return []
+        }
+    }
+    
+    private func decodeRecords<DataModel: Decodable>(records: [CKRecord]) throws -> [DataModel] {
+        return try records.compactMap {
+            let recordDictionary = $0.dictionaryWithValues(forKeys: $0.allKeys())
+            return try Encoder.encode(recordDictionary)
         }
     }
 }
