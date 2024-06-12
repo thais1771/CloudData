@@ -46,24 +46,12 @@ extension CDManager {
     func getSharedRecords() -> [String: String] {
         [:]
     }
+}
 
-    func decodeRecords<DataModel: Decodable>(records: [CKRecord]) throws -> [DataModel] {
-        try records.compactMap {
-            let recordDictionary = $0.dictionaryWithValues(forKeys: $0.allKeys())
-            return try decode(recordDictionary)
-        }
-    }
-
-    func decode<DataModel: Decodable>(_ dictionary: [String: Any]) throws -> DataModel {
-        let data = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
-        let decoder = JSONDecoder()
-
-        do {
-            let decodedData = try decoder.decode(DataModel.self,
-                                                 from: data)
-            return decodedData
-        } catch {
-            throw error
+extension Array where Element == CKRecord {
+    func toDictionary() -> [[String: Any]] {
+        self.compactMap {
+            $0.dictionaryWithValues(forKeys: $0.allKeys())
         }
     }
 }

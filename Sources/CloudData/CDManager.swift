@@ -38,16 +38,27 @@ public class CDManager: ObservableObject {
     ///   - zoneName: The name of the zone to fetch records from. Defaults to `nil`.
     /// - Returns: A dictionary with fetched data.
     /// - Throws: An error if the fetch operation fails.
-    public func fetch<DataModel: Decodable>(recordType: String, fromZoneName zoneName: String? = nil) async throws -> [DataModel] {
+    public func fetch(recordType: String, fromZoneName zoneName: String? = nil) async throws -> [[String: Any]] {
+        try await fetch(recordType: recordType, fromZoneName: zoneName).toDictionary()
+    }
+
+    /// Fetches records of a specified type from the CloudKit database.
+    ///
+    /// This method fetches records based on the CloudKit database type (private, public, or shared).
+    /// - Parameters:
+    ///   - recordType: The type of record to fetch.
+    ///   - zoneName: The name of the zone to fetch records from. Defaults to `nil`.
+    /// - Returns: A dictionary with fetched data.
+    /// - Throws: An error if the fetch operation fails.
+    public func fetch(recordType: String, fromZoneName zoneName: String? = nil) async throws -> [CKRecord] {
         switch configuration.cloudType {
         case .private:
-            let records = try await getPrivateRecords(recordType: recordType,
-                                                      fromZoneName: zoneName)
-            return try decodeRecords(records: records)
+            try await getPrivateRecords(recordType: recordType,
+                                        fromZoneName: zoneName)
         case .public:
-            return []
+            []
         case .shared:
-            return []
+            []
         }
     }
 }
