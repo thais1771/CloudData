@@ -38,7 +38,7 @@ public class CDManager: ObservableObject {
     public func fetch(recordType type: String,
                       fromZoneName zoneName: String? = nil) async throws -> [[String: Any]]
     {
-        try await fetchRecords(recordType: type,
+        try await fetchRecords(fromType: type,
                                fromZoneName: zoneName).toDictionary()
     }
 
@@ -49,7 +49,7 @@ public class CDManager: ObservableObject {
     ///   - zoneName: The name of the zone to fetch records from. Defaults to `nil`.
     /// - Returns: An array of `CKRecord` objects representing the fetched records.
     /// - Throws: An error if the fetch operation fails when accessing the database.
-    public func fetchRecords(recordType type: String,
+    public func fetchRecords(fromType type: String,
                              fromZoneName zoneName: String? = nil) async throws -> [CKRecord]
     {
         switch configuration.cloudType {
