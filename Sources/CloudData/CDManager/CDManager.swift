@@ -35,10 +35,10 @@ public class CDManager: ObservableObject {
     ///   - zoneName: The name of the zone to fetch records from. Defaults to `nil`.
     /// - Returns: An array of dictionaries representing the fetched records.
     /// - Throws: An error if the fetch operation fails.
-    public func fetch(recordType: String,
+    public func fetch(recordType type: String,
                       fromZoneName zoneName: String? = nil) async throws -> [[String: Any]]
     {
-        try await fetchRecords(with: recordType,
+        try await fetchRecords(recordType: type,
                                fromZoneName: zoneName).toDictionary()
     }
 
@@ -49,12 +49,12 @@ public class CDManager: ObservableObject {
     ///   - zoneName: The name of the zone to fetch records from. Defaults to `nil`.
     /// - Returns: An array of `CKRecord` objects representing the fetched records.
     /// - Throws: An error if the fetch operation fails when accessing the database.
-    public func fetchRecords(with recordType: String,
+    public func fetchRecords(recordType type: String,
                              fromZoneName zoneName: String? = nil) async throws -> [CKRecord]
     {
         switch configuration.cloudType {
         case .private:
-            return try await getPrivateRecords(recordType: recordType, fromZoneName: zoneName)
+            return try await getPrivateRecords(recordType: type, fromZoneName: zoneName)
         case .public:
             throw CDManagerFetchError.unableToFetchPublicDatabase
         case .shared:
