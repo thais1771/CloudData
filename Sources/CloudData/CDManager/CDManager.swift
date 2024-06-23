@@ -9,7 +9,7 @@ import CloudKit
 /// A class that manages CloudKit operations such as fetching records from different databases.
 /// `CDManager` conforms to `ObservableObject` to allow SwiftUI views to react to changes in the object.
 public class CDManager: ObservableObject {
-    static var SI = CDManager()
+    public static var SI = CDManager()
     
     // MARK: - Properties
     /// The configuration settings for the CDManager.
