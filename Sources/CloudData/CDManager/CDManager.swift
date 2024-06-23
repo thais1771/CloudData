@@ -23,6 +23,12 @@ public class CDManager: ObservableObject {
 
     // MARK: - Initializers
     // TODO: 🙋🏽‍♀️ Docs.
+    public func setConfiguration(configuration: CDManagerConfig) -> CDManager {
+        Self.SI.configuration = configuration
+        return self
+    }
+    
+    // TODO: 🙋🏽‍♀️ Docs.
     public func setConfiguration(configuration: CDManagerConfig) {
         Self.SI.configuration = configuration
     }
