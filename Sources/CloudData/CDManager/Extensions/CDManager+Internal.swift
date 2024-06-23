@@ -14,11 +14,11 @@ extension CDManager {
     func getDatabase() -> CKDatabase {
         switch configuration.cloudType {
         case .private:
-            return container.privateCloudDatabase
+            container.privateCloudDatabase
         case .public:
-            return container.publicCloudDatabase
+            container.publicCloudDatabase
         case .shared:
-            return container.sharedCloudDatabase
+            container.sharedCloudDatabase
         }
     }
 
@@ -41,29 +41,25 @@ extension CDManager {
             result.1.get
         }
 
-        do {
-            return try records.map { try $0() }
-        } catch {
-            throw error
-        }
+        return try records.map { try $0() }
     }
 
     /// Fetches public `CloudKit` records.
     ///
     /// - Important: Make documentation when method implemented / developed.
-    fileprivate func getPublicRecords() -> [String: String] {
-        return [:]
+    private func getPublicRecords() -> [String: String] {
+        [:]
     }
 
     /// Fetches shared `CloudKit` records.
     ///
     /// - Important: Make documentation when method implemented / developed.
-    fileprivate func getSharedRecords() -> [String: String] {
-        return [:]
+    private func getSharedRecords() -> [String: String] {
+        [:]
     }
 }
 
-extension Array where Element == CKRecord {
+extension [CKRecord] {
     /// Converts an array of `CKRecord` objects into an array of dictionaries.
     ///
     /// - Returns: An array of dictionaries, where each dictionary represents a `CKRecord`'s key-value pairs.
