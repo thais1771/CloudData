@@ -27,7 +27,7 @@ public class CDManager: ObservableObject {
         Self.SI.configuration = configuration
         return self
     }
-    
+
     // TODO: 🙋🏽‍♀️ Docs.
     public func setConfiguration(configuration: CDManagerConfig) {
         Self.SI.configuration = configuration
@@ -67,4 +67,6 @@ public class CDManager: ObservableObject {
             throw CDManagerFetchError.unableToFetchSharedDatabase
         }
     }
+
+    public func newRecord(_ record: CKRecord) async throws {}
 }
