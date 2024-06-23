@@ -10,7 +10,7 @@ import CloudKit
 /// `CDManager` conforms to `ObservableObject` to allow SwiftUI views to react to changes in the object.
 public class CDManager: ObservableObject {
     public static var SI = CDManager()
-    
+
     // MARK: - Properties
     /// The configuration settings for the CDManager.
     var configuration: CDManagerConfig!
@@ -23,7 +23,7 @@ public class CDManager: ObservableObject {
 
     // MARK: - Initializers
     // TODO: 🙋🏽‍♀️ Docs.
-    func setConfiguration(configuration: CDManagerConfig) {
+    public func setConfiguration(configuration: CDManagerConfig) {
         Self.SI.configuration = configuration
     }
 
