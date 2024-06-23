@@ -9,9 +9,11 @@ import CloudKit
 /// A class that manages CloudKit operations such as fetching records from different databases.
 /// `CDManager` conforms to `ObservableObject` to allow SwiftUI views to react to changes in the object.
 public class CDManager: ObservableObject {
+    static var SI = CDManager()
+    
     // MARK: - Properties
     /// The configuration settings for the CDManager.
-    let configuration: CDManagerConfig
+    var configuration: CDManagerConfig!
 
     // MARK: CloudKit Properties
     /// The CloudKit container initialized with the provided container identifier.
@@ -20,11 +22,9 @@ public class CDManager: ObservableObject {
     lazy var database = getDatabase()
 
     // MARK: - Initializers
-    /// Initializes a new instance of CDManager with the provided configuration.
-    ///
-    /// - Parameter config: The configuration object containing settings for the CDManager.
-    public init(withConfiguration config: CDManagerConfig) {
-        self.configuration = config
+    // TODO: 🙋🏽‍♀️ Docs.
+    func setConfiguration(configuration: CDManagerConfig) {
+        Self.SI.configuration = configuration
     }
 
     // MARK: - Actions
