@@ -68,5 +68,9 @@ public class CDManager: ObservableObject {
         }
     }
 
-    public func newRecord(_ record: CKRecord) async throws {}
+    public func newRecord(_ record: CKRecord) async throws {
+        _ = try await database.modifyRecords(saving: [record],
+                                             deleting: [],
+                                             savePolicy: .allKeys)
+    }
 }
